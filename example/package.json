@@ -1,0 +1,19 @@
+{
+  "name": "example",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "ts-proto": "^2.6.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "proto": "protoc --plugin=.\\node_modules\\.bin\\protoc-gen-ts_proto --ts_proto_opt=esModuleInterop=true --ts_proto_opt=importSuffix=.js --ts_proto_out=./src ./proto/*.proto"
+  },
+  "dependencies": {
+    "elysia": "^1.2.22"
+  }
+}

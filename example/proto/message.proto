@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message RequestMessage {
+  string title = 1;
+  optional int32 updatedAt = 2;
+  repeated string tags = 3;
+}
+
+enum ResponseStatus {
+  OK = 0;
+  SOME = 1;
+}
+
+message ResponseMessage {
+  ResponseStatus status = 1;
+  string inlineTags = 2;
+}
