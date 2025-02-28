@@ -5,7 +5,7 @@ Easy support protobuf integration for Elysia. To decode/encode we use [@bufbuild
 ## Install
 
 ```bash
-bun install eylsia-protobuf
+bun install elysia-protobuf
 ```
 
 ## Before starting
