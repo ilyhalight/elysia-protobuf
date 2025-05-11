@@ -57,7 +57,7 @@ const app = new Elysia()
       parse: "protobuf",
       // encode response with protobuf schema
       responseSchema: "post.response",
-      // ! ❌ elysia validation INCOMPATIBLE with this plugin
+      // ! ❌ elysia validation INCOMPATIBLE with `parse: "protobuf"`
       // body: t.Object({
       //   title: t.String(),
       //   updatedAt: t.Optional(t.Number()),
