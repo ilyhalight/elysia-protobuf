@@ -1,12 +1,7 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import crypto from "node:crypto";
 
 import type { ElysiaProtobufOptions, Schemas } from "./types/client";
-import {
-  RequestMessage,
-  ResponseMessage,
-  ResponseStatus,
-} from "../example/src/proto/message";
 
 export class ProtoResponseError extends Error {
   constructor(message: string) {
