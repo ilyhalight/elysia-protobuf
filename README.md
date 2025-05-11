@@ -65,7 +65,7 @@ const app = new Elysia()
   .listen(3000);
 ```
 
-**❌ Don't**: Use default body/response elysia validation with protobuf parser
+**❌ Don't**: Use default body/response elysia validation with `parse: "protobuf"`
 
 ```ts
 // ...
@@ -92,7 +92,7 @@ const app = new Elysia()
     {
       parse: "protobuf",
       responseSchema: "post.response",
-      // ! ❌ INCOMPATIBLE with this plugin
+      // ! ❌ INCOMPATIBLE with `parse: "protobuf"`
       //   body: t.Object({
       //     title: t.String(),
       //     updatedAt: t.Optional(t.Number()),
