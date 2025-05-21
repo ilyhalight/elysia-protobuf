@@ -2,6 +2,8 @@ import { Elysia } from "elysia";
 import crypto from "node:crypto";
 
 import type { ElysiaProtobufOptions, Schemas } from "./types/client";
+import { ElysiaCustomStatusResponse } from "elysia/error";
+import { MessageFns } from "./types/proto";
 
 export class ProtoResponseError extends Error {
   constructor(message: string) {
@@ -45,6 +47,29 @@ export const verify = async (
   const signatureData = new Uint8Array(Buffer.from(signature, "hex"));
   return await crypto.subtle.verify("HMAC", key, signatureData, data);
 };
+
+function handleResponseBody(
+  responseBody: any,
+  responseSchema: MessageFns<any>,
+): Response {
+  if (!responseBody || typeof responseBody !== "object") {
+    throw new ProtoResponseError("Response must be an object");
+  }
+  if (Object.keys(responseBody).length === 0) {
+    return new Response();
+  }
+  try {
+    return new Response(responseSchema.encode(responseBody).finish());
+  } catch {
+    throw new ProtoResponseError("Failed to encode protobuf body");
+  }
+}
+
+function isElysiaCustomStatusResponse(
+  obj: any,
+): obj is ElysiaCustomStatusResponse<any, any> {
+  return obj?.constructor?.name === ElysiaCustomStatusResponse.name;
+}
 
 export const protobuf = <T extends Schemas>(
   options: ElysiaProtobufOptions<T> = {},
@@ -100,13 +125,15 @@ export const protobuf = <T extends Schemas>(
           if (!response || typeof response !== "object") {
             throw new ProtoResponseError("Response must be an object");
           }
+          set.headers["content-type"] = "application/x-protobuf";
 
-          try {
-            set.headers["content-type"] = "application/x-protobuf";
-            return new Response(schemas[name].encode(response).finish());
-          } catch {
-            throw new ProtoResponseError("Failed to encode protobuf body");
+          if (isElysiaCustomStatusResponse(response)) {
+            return new ElysiaCustomStatusResponse(
+              response.code,
+              handleResponseBody(response.response, schemas[name]),
+            );
           }
+          return handleResponseBody(response, schemas[name]);
         },
       }),
     })
