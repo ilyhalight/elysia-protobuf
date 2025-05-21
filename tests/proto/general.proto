@@ -1,0 +1,4 @@
+syntax = "proto3";
+
+message RequestMessage { repeated string tags = 3; }
+message ResponseMessage { string inlineTags = 2; }
