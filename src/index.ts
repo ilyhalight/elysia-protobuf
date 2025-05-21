@@ -49,7 +49,7 @@ export const verify = async (
 };
 
 function handleResponseBody(
-  responseBody: any,
+  responseBody: unknown,
   responseSchema: MessageFns<any>,
 ): Response {
   if (!responseBody || typeof responseBody !== "object") {
@@ -66,9 +66,13 @@ function handleResponseBody(
 }
 
 function isElysiaCustomStatusResponse(
-  obj: any,
+  obj: unknown,
 ): obj is ElysiaCustomStatusResponse<any, any> {
   return obj?.constructor?.name === ElysiaCustomStatusResponse.name;
+}
+
+function isResponse(obj: unknown): obj is Response {
+  return obj instanceof Response;
 }
 
 export const protobuf = <T extends Schemas>(
@@ -121,7 +125,7 @@ export const protobuf = <T extends Schemas>(
     )
     .macro({
       responseSchema: (name: keyof T) => ({
-        afterHandle: ({ response, set }) => {
+        afterHandle: async ({ response, set }) => {
           if (!response || typeof response !== "object") {
             throw new ProtoResponseError("Response must be an object");
           }
@@ -133,6 +137,18 @@ export const protobuf = <T extends Schemas>(
               handleResponseBody(response.response, schemas[name]),
             );
           }
+          if (isResponse(response)) {
+            try {
+              const data = await response.json();
+              return new Response(
+                handleResponseBody(data, schemas[name]).body,
+                response,
+              );
+            } catch {
+              throw new ProtoResponseError("Invalid response body");
+            }
+          }
+
           return handleResponseBody(response, schemas[name]);
         },
       }),
