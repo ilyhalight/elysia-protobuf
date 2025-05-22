@@ -1,6 +1,6 @@
 {
   "name": "elysia-protobuf",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Toil",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

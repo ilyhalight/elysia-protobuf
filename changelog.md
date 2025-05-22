@@ -1,3 +1,7 @@
+# 1.0.4
+
+- Fixed name matching for `ElysiaCustomStatusResponse` in minified build (in #3)
+
 # 1.0.3
 
 - Added support return with elysia status function (#2 in #1)
