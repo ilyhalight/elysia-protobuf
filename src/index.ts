@@ -68,7 +68,7 @@ function handleResponseBody(
 function isElysiaCustomStatusResponse(
   obj: unknown,
 ): obj is ElysiaCustomStatusResponse<any, any> {
-  return obj?.constructor?.name === ElysiaCustomStatusResponse.name;
+  return obj?.constructor?.name === "ElysiaCustomStatusResponse";
 }
 
 function isResponse(obj: unknown): obj is Response {
@@ -125,14 +125,14 @@ export const protobuf = <T extends Schemas>(
     )
     .macro({
       responseSchema: (name: keyof T) => ({
-        afterHandle: async ({ response, set }) => {
+        afterHandle: async ({ response, set, status }) => {
           if (!response || typeof response !== "object") {
             throw new ProtoResponseError("Response must be an object");
           }
           set.headers["content-type"] = "application/x-protobuf";
 
           if (isElysiaCustomStatusResponse(response)) {
-            return new ElysiaCustomStatusResponse(
+            return status(
               response.code,
               handleResponseBody(response.response, schemas[name]),
             );
