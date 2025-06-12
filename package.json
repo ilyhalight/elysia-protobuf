@@ -52,7 +52,7 @@
   "license": "MIT",
   "scripts": {
     "build:bun": "bun run ./scripts/build.ts",
-    "lint": "bunx oxlint --ignore-path=.oxlintignore && bunx eslint",
+    "lint": "bunx oxlint",
     "prepare": "husky"
   },
   "type": "module",
