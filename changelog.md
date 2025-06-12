@@ -1,3 +1,7 @@
+# 1.0.5
+
+- Added `protobufParser` export for use `{ parser: "protobuf" }` to parse body as `Uint8Array` without other logic. It also helps remove duplication protobuf configuration in nested `group` (check [tests/instances.test.ts](./tests/instances.test.ts) for example)
+
 # 1.0.4
 
 - Fixed name matching for `ElysiaCustomStatusResponse` in minified build (in #3)

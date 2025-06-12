@@ -158,6 +158,16 @@ const app = new Elysia()
 // ...
 ```
 
+You can only parse protobuf body as `UInt8Array` with use only `protobufParser`
+
+```ts
+import { protobufParser } from "../src";
+
+const app = new Elysia().use(protobufParser()).post("/a", ({ body }) => body, {
+  parse: "protobuf",
+});
+```
+
 ### Create protobuf schema:
 
 1. Install [protoc](https://github.com/protocolbuffers/protobuf/releases)

@@ -75,6 +75,16 @@ function isResponse(obj: unknown): obj is Response {
   return obj instanceof Response;
 }
 
+export const protobufParser = () =>
+  new Elysia()
+    .parser("protobuf", async (ctx) => {
+      if (ctx.contentType === "application/x-protobuf") {
+        const data = await ctx.request.arrayBuffer();
+        return new Uint8Array(data);
+      }
+    })
+    .as("scoped");
+
 export const protobuf = <T extends Schemas>(
   options: ElysiaProtobufOptions<T> = {},
 ) => {
@@ -85,12 +95,7 @@ export const protobuf = <T extends Schemas>(
     secret: signatureSecret = "replaceme",
   } = options.signature ?? {};
   return new Elysia({ name: "elysia-protobuf" })
-    .parser("protobuf", async (ctx) => {
-      if (ctx.contentType === "application/x-protobuf") {
-        const data = await ctx.request.arrayBuffer();
-        return new Uint8Array(data);
-      }
-    })
+    .use(protobufParser())
     .decorate(
       "decode",
       async <K extends keyof T>(
