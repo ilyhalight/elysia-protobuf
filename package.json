@@ -1,8 +1,8 @@
 {
   "name": "elysia-protobuf",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Toil",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.js",
   "dependencies": {
     "@bufbuild/protobuf": "2.2.3"

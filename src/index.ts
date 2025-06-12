@@ -5,17 +5,8 @@ import type { ElysiaProtobufOptions, Schemas } from "./types/client";
 import { ElysiaCustomStatusResponse } from "elysia/error";
 import { MessageFns } from "./types/proto";
 
-export class ProtoResponseError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-export class ProtoRequestError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
+export class ProtoResponseError extends Error {}
+export class ProtoRequestError extends Error {}
 
 const utf8Encoder = new TextEncoder();
 
@@ -76,7 +67,7 @@ function isResponse(obj: unknown): obj is Response {
 }
 
 export const protobufParser = () =>
-  new Elysia()
+  new Elysia({ name: "elysia-protobuf-parser" })
     .parser("protobuf", async (ctx) => {
       if (ctx.contentType === "application/x-protobuf") {
         const data = await ctx.request.arrayBuffer();
