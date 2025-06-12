@@ -1,0 +1,12 @@
+{
+  "categories": {
+    "correctness": "error",
+    "perf": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "no-named-as-default": "off"
+  },
+  "ignorePatterns": [],
+  "plugins": ["promise", "import", "eslint", "oxc", "typescript", "unicorn"]
+}
