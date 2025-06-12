@@ -158,7 +158,7 @@ const app = new Elysia()
 // ...
 ```
 
-You can only parse protobuf body as `UInt8Array` with use only `protobufParser`
+You can only parse protobuf body as `Uint8Array` with use only `protobufParser`
 
 ```ts
 import { protobufParser } from "../src";
