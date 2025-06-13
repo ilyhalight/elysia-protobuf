@@ -1,5 +1,9 @@
 import Elysia, { t } from "elysia";
-import { protobuf, ProtoRequestError, ProtoResponseError } from "../../src";
+import {
+  protobuf,
+  ProtoRequestError,
+  ProtoResponseError,
+} from "elysia-protobuf";
 import {
   RequestMessage,
   ResponseMessage,
