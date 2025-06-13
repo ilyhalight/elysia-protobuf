@@ -1,3 +1,7 @@
+# 1.0.7
+
+- Unpin `@bufbuild/protobuf` dependency
+
 # 1.0.6
 
 - Added missed name for `protobufParser` export
