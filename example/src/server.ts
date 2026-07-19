@@ -1,9 +1,5 @@
 import Elysia, { t } from "elysia";
-import {
-  protobuf,
-  ProtoRequestError,
-  ProtoResponseError,
-} from "elysia-protobuf";
+import { protobuf, TProtobuf } from "elysia-protobuf";
 import {
   RequestMessage,
   ResponseMessage,
@@ -13,10 +9,6 @@ import {
 const app = new Elysia()
   .use(
     protobuf({
-      schemas: {
-        "post.request": RequestMessage,
-        "post.response": ResponseMessage,
-      },
       // (optional) verify body with signature
       signature: {
         enabled: true,
@@ -25,50 +17,18 @@ const app = new Elysia()
       },
     }),
   )
-  // (optional) error handling
-  .error({
-    PROTO_RESPONSE_ERROR: ProtoResponseError,
-    PROTO_REQUEST_ERROR: ProtoRequestError,
-  })
-  .onError(({ code, error, set }) => {
-    switch (code) {
-      case "PROTO_REQUEST_ERROR": {
-        set.status = 400;
-        break;
-      }
-      case "PROTO_RESPONSE_ERROR": {
-        set.status = 500;
-        break;
-      }
-    }
-
-    return {
-      message: (error as Error).message,
-    };
-  })
   .post(
     "/post",
-    async ({ body, decode, headers }) => {
-      // decode uint8array with your schema
-      const data = await decode("post.request", body, headers);
+    ({ body }) => {
       return {
         status: ResponseStatus.SOME,
-        inlineTags: data.tags.join(", "),
+        inlineTags: body.tags.join(", "),
       };
     },
     {
-      // parse body as arrayBuffer -> Uint8Array
       parse: "protobuf",
-      // encode response with protobuf schema
-      responseSchema: "post.response",
-      // ! ❌ elysia validation INCOMPATIBLE with `parse: "protobuf"`
-      // body: t.Object({
-      //   title: t.String(),
-      //   updatedAt: t.Optional(t.Number()),
-      //   tags: t.Array(t.String()),
-      // }),
-      // Doubtful But Okay
-      // body: t.Uint8Array(),
+      body: TProtobuf(RequestMessage),
+      response: TProtobuf(ResponseMessage),
     },
   )
   .post(

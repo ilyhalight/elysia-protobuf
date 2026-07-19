@@ -1,5 +1,5 @@
 import { RequestMessage, ResponseMessage } from "./proto/message";
-import { sign } from "../../src/index";
+import { sign } from "elysia-protobuf";
 
 async function main() {
   const data = RequestMessage.encode({
