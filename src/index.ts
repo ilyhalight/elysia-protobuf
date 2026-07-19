@@ -121,31 +121,31 @@ export const protobuf = <T extends Schemas>(
     )
     .macro({
       responseSchema: (name: keyof T) => ({
-        afterHandle: async ({ response, set, status }) => {
-          if (!response || typeof response !== "object") {
+        afterHandle: async ({ responseValue, set, status }) => {
+          if (!responseValue || typeof responseValue !== "object") {
             throw new ProtoResponseError("Response must be an object");
           }
           set.headers["content-type"] = "application/x-protobuf";
 
-          if (isElysiaCustomStatusResponse(response)) {
+          if (isElysiaCustomStatusResponse(responseValue)) {
             return status(
-              response.code,
-              handleResponseBody(response.response, schemas[name]),
+              responseValue.code,
+              handleResponseBody(responseValue.response, schemas[name]),
             );
           }
-          if (isResponse(response)) {
+          if (isResponse(responseValue)) {
             try {
-              const data = await response.json();
+              const data = await responseValue.json();
               return new Response(
                 handleResponseBody(data, schemas[name]).body,
-                response,
+                responseValue,
               );
             } catch {
               throw new ProtoResponseError("Invalid response body");
             }
           }
 
-          return handleResponseBody(response, schemas[name]);
+          return handleResponseBody(responseValue, schemas[name]);
         },
       }),
     })
