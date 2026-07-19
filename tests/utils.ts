@@ -1,3 +1,5 @@
+import { ResponseTags } from "./proto/general";
+
 export const post = (
   path: string,
   body?: Uint8Array,
@@ -11,3 +13,8 @@ export const post = (
     },
     body,
   });
+
+export const decodeTags = async (res: Response) => {
+  const response = await res.arrayBuffer();
+  return ResponseTags.decode(new Uint8Array(response));
+};

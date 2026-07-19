@@ -19,20 +19,21 @@ export type SignatureOptions = {
    * @default "replaceme"
    */
   secret?: string;
+  /**
+   * Show parse errors instead of Bad Request 400
+   *
+   * @default true
+   */
+  showParseErrors?: boolean;
 };
 
 export type Schemas = Record<string, MessageFns<any>>;
-export type ElysiaProtobufOptions<T extends Schemas> = {
+
+export type ElysiaProtobufOptions = {
   /**
    * Signature options
    *
    * @default undefined
    */
   signature?: SignatureOptions;
-  /**
-   * Like Elysia.model, but for protobuf schemas instead of typebox
-   *
-   * @default {}
-   */
-  schemas?: T;
 };
