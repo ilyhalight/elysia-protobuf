@@ -5,8 +5,8 @@
     "suspicious": "warn"
   },
   "rules": {
-    "no-named-as-default": "off"
+    "no-shadow": "off"
   },
-  "ignorePatterns": [],
+  "ignorePatterns": ["dist", "**/*.d.ts", "src/types/proto.ts"],
   "plugins": ["promise", "import", "eslint", "oxc", "typescript", "unicorn"]
 }

@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - run: bunx oxfmt --no-error-on-unmatched-pattern
+      glob:
+        - "*"
+      stage_fixed: true
+
+    - run: bun run lint
+      glob:
+        - "*.ts"
+        - "*.js"
+        - "*.tsx"
+        - "*.jsx"
+      stage_fixed: true
