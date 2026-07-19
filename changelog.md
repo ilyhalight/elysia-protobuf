@@ -1,3 +1,9 @@
+# 1.1.0
+
+- Migrated from deprecated `response` to `responseValue` in `afterHandle`
+- Migrated to **Typescript 6.x**
+- Bump depends
+
 # 1.0.7
 
 - Unpin `@bufbuild/protobuf` dependency
